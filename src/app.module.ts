@@ -1,10 +1,27 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { TodoModule } from './app/todo/todo.module';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        type: 'mariadb',
+        host: configService.get('DB_HOST', 'localhost'),
+        port: Number(configService.get('DB_PORT', 3306)),
+        username: configService.get('DB_USERNAME', 'root'),
+        password: configService.get('DB_PASSWORD', '123'),
+        database: configService.get('DB_DATABASE', 'todo-database'),
+        entities: [],
+        synchronize: true,
+      }),
+    }),
+    TodoModule,
+  ],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
