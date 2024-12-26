@@ -16,6 +16,7 @@ import { UpdateTodoDto } from './dto/update-todo.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { IndexTodoSwagger } from '../swagger/index-todo.swagger';
 import { CreateTodoSwagger } from '../swagger/create-todo.swagger';
+import { ShowTodoSwagger } from '../swagger/show-todo.swagger';
 
 @Controller('api/v1/todos')
 @ApiTags('todos')
@@ -55,7 +56,11 @@ export class TodoController {
     description: 'Task successfully retrieved.',
   })
   @ApiResponse({ status: 404, description: 'Task not found.' })
-  @ApiResponse({ status: 500, description: 'Internal server error.' })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error.',
+    type: ShowTodoSwagger,
+  })
   async show(@Param('id', new ParseUUIDPipe()) id: string) {
     return await this.todoService.findOneOrFail(id);
   }
