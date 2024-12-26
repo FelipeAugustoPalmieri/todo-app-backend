@@ -17,6 +17,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { IndexTodoSwagger } from '../swagger/index-todo.swagger';
 import { CreateTodoSwagger } from '../swagger/create-todo.swagger';
 import { ShowTodoSwagger } from '../swagger/show-todo.swagger';
+import { UpdateTodoSwagger } from '../swagger/update-todo.swagger';
 
 @Controller('api/v1/todos')
 @ApiTags('todos')
@@ -73,6 +74,7 @@ export class TodoController {
   @ApiResponse({
     status: 200,
     description: 'Task successfully updated.',
+    type: UpdateTodoSwagger,
   })
   @ApiResponse({
     status: 400,
