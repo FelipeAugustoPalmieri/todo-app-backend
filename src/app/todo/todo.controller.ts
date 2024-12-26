@@ -38,11 +38,14 @@ export class TodoController {
 
   @Post()
   @ApiOperation({ summary: 'Add a new task' })
-  @ApiResponse({ status: 201, description: 'Task successfully created.' })
+  @ApiResponse({
+    status: 201,
+    description: 'Task successfully created.',
+    type: ShowTodoSwagger,
+  })
   @ApiResponse({
     status: 400,
     description: 'Invalid data format or missing required fields.',
-    type: CreateTodoSwagger,
   })
   @ApiResponse({ status: 500, description: 'Internal server error.' })
   async create(@Body() body: CreateTodoDto) {
@@ -54,12 +57,12 @@ export class TodoController {
   @ApiResponse({
     status: 200,
     description: 'Task successfully retrieved.',
+    type: ShowTodoSwagger,
   })
   @ApiResponse({ status: 404, description: 'Task not found.' })
   @ApiResponse({
     status: 500,
     description: 'Internal server error.',
-    type: ShowTodoSwagger,
   })
   async show(@Param('id', new ParseUUIDPipe()) id: string) {
     return await this.todoService.findOneOrFail(id);
