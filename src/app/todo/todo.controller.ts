@@ -15,6 +15,7 @@ import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { IndexTodoSwagger } from '../swagger/index-todo.swagger';
+import { CreateTodoSwagger } from '../swagger/create-todo.swagger';
 
 @Controller('api/v1/todos')
 @ApiTags('todos')
@@ -40,6 +41,7 @@ export class TodoController {
   @ApiResponse({
     status: 400,
     description: 'Invalid data format or missing required fields.',
+    type: CreateTodoSwagger,
   })
   @ApiResponse({ status: 500, description: 'Internal server error.' })
   async create(@Body() body: CreateTodoDto) {
