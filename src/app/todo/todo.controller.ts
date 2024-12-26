@@ -15,6 +15,9 @@ import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { IndexTodoSwagger } from '../swagger/index-todo.swagger';
+import { CreateTodoSwagger } from '../swagger/create-todo.swagger';
+import { ShowTodoSwagger } from '../swagger/show-todo.swagger';
+import { UpdateTodoSwagger } from '../swagger/update-todo.swagger';
 
 @Controller('api/v1/todos')
 @ApiTags('todos')
@@ -36,7 +39,11 @@ export class TodoController {
 
   @Post()
   @ApiOperation({ summary: 'Add a new task' })
-  @ApiResponse({ status: 201, description: 'Task successfully created.' })
+  @ApiResponse({
+    status: 201,
+    description: 'Task successfully created.',
+    type: ShowTodoSwagger,
+  })
   @ApiResponse({
     status: 400,
     description: 'Invalid data format or missing required fields.',
@@ -51,9 +58,13 @@ export class TodoController {
   @ApiResponse({
     status: 200,
     description: 'Task successfully retrieved.',
+    type: ShowTodoSwagger,
   })
   @ApiResponse({ status: 404, description: 'Task not found.' })
-  @ApiResponse({ status: 500, description: 'Internal server error.' })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error.',
+  })
   async show(@Param('id', new ParseUUIDPipe()) id: string) {
     return await this.todoService.findOneOrFail(id);
   }
@@ -63,6 +74,7 @@ export class TodoController {
   @ApiResponse({
     status: 200,
     description: 'Task successfully updated.',
+    type: UpdateTodoSwagger,
   })
   @ApiResponse({
     status: 400,
