@@ -1,3 +1,3 @@
 import { TodoEntity } from '../todo/entity/todo.entity';
 
-export class IndexTodoSwagger {}
+export class IndexTodoSwagger extends TodoEntity {}
