@@ -14,10 +14,12 @@ import { TodoService } from './todo.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { IndexTodoSwagger } from '../swagger/index-todo.swagger';
-import { CreateTodoSwagger } from '../swagger/create-todo.swagger';
-import { ShowTodoSwagger } from '../swagger/show-todo.swagger';
-import { UpdateTodoSwagger } from '../swagger/update-todo.swagger';
+import { IndexTodoSwagger } from './swagger/index-todo.swagger';
+import { CreateTodoSwagger } from './swagger/create-todo.swagger';
+import { ShowTodoSwagger } from './swagger/show-todo.swagger';
+import { UpdateTodoSwagger } from './swagger/update-todo.swagger';
+import { BadRequestSwagger } from 'src/helpers/swagger/bad-request.swagger';
+import { NotFoundSwagger } from 'src/helpers/swagger/not-found.swagger';
 
 @Controller('api/v1/todos')
 @ApiTags('todos')
@@ -47,8 +49,12 @@ export class TodoController {
   @ApiResponse({
     status: 400,
     description: 'Invalid data format or missing required fields.',
+    type: BadRequestSwagger,
   })
-  @ApiResponse({ status: 500, description: 'Internal server error.' })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error.',
+  })
   async create(@Body() body: CreateTodoDto) {
     return await this.todoService.create(body);
   }
@@ -60,7 +66,11 @@ export class TodoController {
     description: 'Task successfully retrieved.',
     type: ShowTodoSwagger,
   })
-  @ApiResponse({ status: 404, description: 'Task not found.' })
+  @ApiResponse({
+    status: 404,
+    description: 'Task not found.',
+    type: NotFoundSwagger,
+  })
   @ApiResponse({
     status: 500,
     description: 'Internal server error.',
@@ -78,9 +88,14 @@ export class TodoController {
   })
   @ApiResponse({
     status: 400,
-    description: 'Invalid data format or missing required fields.',
+    description: 'invalid data.',
+    type: BadRequestSwagger,
   })
-  @ApiResponse({ status: 404, description: 'Task not found.' })
+  @ApiResponse({
+    status: 404,
+    description: 'Task not found.',
+    type: NotFoundSwagger,
+  })
   @ApiResponse({ status: 500, description: 'Internal server error.' })
   async update(
     @Param('id', new ParseUUIDPipe()) id: string,
@@ -95,7 +110,11 @@ export class TodoController {
     status: 204,
     description: 'Task successfully deleted. No content returned.',
   })
-  @ApiResponse({ status: 404, description: 'Task not found.' })
+  @ApiResponse({
+    status: 404,
+    description: 'Task not found.',
+    type: NotFoundSwagger,
+  })
   @ApiResponse({ status: 500, description: 'Internal server error.' })
   @HttpCode(HttpStatus.NO_CONTENT)
   async destroy(@Param('id', new ParseUUIDPipe()) id: string) {
