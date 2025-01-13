@@ -2,17 +2,17 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { TodoController } from './todo.controller';
 
 describe('TodoController', () => {
-  let controller: TodoController;
+  let todoController: TodoController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [TodoController],
     }).compile();
 
-    controller = module.get<TodoController>(TodoController);
+    todoController = module.get<TodoController>(TodoController);
   });
 
   it('should be defined', () => {
-    expect(controller).toBeDefined();
+    expect(todoController).toBeDefined();
   });
 });
